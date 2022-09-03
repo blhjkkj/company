@@ -1,0 +1,22 @@
+{% extends "company/base.html" %}
+<!--truncatechars:100,前一百字，但在ckeditor加|safe后无效。 -->
+{% block content %}
+{% for topic in topics %}
+<span calss='border primary bg-info'>
+    <div class="d-flex flex-colum">
+        <p><a class='btn btn-primary' href="{% url 'company:topic' topic.id %}"  role="button">{{ topic.caption|safe }}</a></p>
+    </div>
+      <hr class='my-2 '>    
+            {% for xinw in topic.get_xinws %}
+          <div class="d-flex flex-colum"><p><h4>{{ xinw.caption|safe }}</h4></p></div>  
+        <p>{{ xinw.content|safe|truncatewords:5 }}</p> <a href="{% url 'company:capl' %}?id={{xinw.id}}" target="_blank" class="readmore">阅读全文&gt;&gt;</a>
+        
+
+    {% endfor %}
+      <hr class='my-2 '>
+</span>
+{% endfor %}
+
+
+
+{% endblock content %}

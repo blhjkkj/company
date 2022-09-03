@@ -1,0 +1,26 @@
+{% extends "company/base.html" %}
+{% load i18n %}
+{% load bootstrap4 %}
+{% block title %}注销{% endblock %}
+{% block content %}
+
+<div class="container shadow p-3 mb-1  rounded text-center">
+      <h1>{% trans "Sign Out" %}</h1>
+      <hr>
+
+      <p>{% trans 'Are you sure you want to sign out?' %}</p>
+
+      <form  method="post" action="{% url 'account_logout' %}">
+      {% csrf_token %}
+      
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+      {% endif %}
+      <button type="submit" class="btn btn-primary">确定</button>
+      </form>
+    
+  
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "company/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class=" p-1 mb-1 alert alert-info " >
+    <p><h4><a class="text-dark" href="{% url 'company:分类资讯' %}" role="alert">【返回：分类资讯】</a></h4></p>
+</div>
+<div class='container shadow p-1 mb-1 ' style="background-color: #FFFFFF;">
+   <div class="card mb-3">
+   <h3 class='card title text-center '>{{ xinw.caption|safe }} </h3>
+
+    <div class='card header text-right'>作者：{{ xinw.author }}--发布时间：{{ xinw.date_added|date:'Y-m-d,H:i' }}
+        <span class="text-dark text-center">来源：{{xinw.origin}}     阅读量：{{xinw.click_num}}</span>
+            
+    <div class="card body">{{xinw.content|safe}}</div>
+</div>
+</div>
+    <div class="col">
+                                {% if user.is_authenticated %}
+                <p>
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"> 我也要发言：
+                </button>
+                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment" aria-expanded="false" aria-controls="comment">共有{{ comments.count }}条评论
+            </button>
+            </p>
+    </div>
+               
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <form
+                     action="{% url 'comment:xinw_comment' xinw.id %}" 
+                        method="POST"
+                    >       
+                     
+                                        {% csrf_token %}
+                                    {{ comment_form.as_p }} 
+                
+                                        <!-- 提交按钮 -->
+                    <button type="submit" class="btn btn-primary ">发送</button>                    
+                </form>
+        </div>
+    </div>
+    
+                    <br>
+                                    {% else %}
+                    <br>
+                    <h5 class="row justify-content-center">
+
+                    请在<a href="{% url 'account_login' %}?next=
+{% firstof request.path '/' %}">登录</a>后发表评论
+                    </h5>
+                    <br>
+                    {% endif %}
+
+
+                    {% load mptt_tags %}
+                 
+    <div class="collapse" id="comment">
+        <div class="card card-body">
+                        {% recursetree comments %}
+            <div class="{% if node.reply_to %}
+                            offset-1 col-11
+                            {% else %}
+                            col-12
+                            {% endif %}">
+                            <hr>
+          
+                            <p>                   
+                            <strong style="color: red">
+                                    {{ node.user }}
+                            </strong> 
+                        
+                            {% if node.reply_to %}
+                        <i class="far fa-arrow-alt-circle-right" 
+                            style="color: cornflowerblue;"
+                        ></i>
+                            <strong style="color: pink">
+                            对{{ node.reply_to }}说：
+                            </strong> 
+                        
+                            {% endif %}
+
+                            </P>
+                <div>{{ node.content|safe }}
+                </div>
+                    <span style='color: gray;'>{{ node.created_date|date:"Y-m-d H:i" }}
+                            </span>
+                    <a  type="button" class="btn btn-primary"  aria-hidden="true" data-toggle="modal" data-target="#_{{node.pk}}"  >
+           
+                                    回复&gt;&gt;
+                    </a>
+                    <form method="post" action="{% url 'comment:xinw_comment' xinw.id %}" style="position:absolute">
+                            {% csrf_token %}
+                <div class="modal fade " id="_{{node.pk}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">回复 {{node.user}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;
+                                        </span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <input  type="hidden" name="parent" value="{{ node.pk }}">
+                                <input type="hidden" name="comment" value="{{ node.id }}">
+                                <textarea type="text" class="form-control mt-2" placeholder="请输入..." name="content"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                <button type="submit" class="btn btn-primary">新建</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    </form>
+                                     
+                    
+                        {% if not node.is_leaf_node %}
+                <div class="children" style="color:#A0A0A0;">
+                        {{ children }}
+                </div>
+                            {% endif %}
+            </div>          
+                                               
+                    {% endrecursetree %}
+            
+        </div>
+    </div>
+   
+
+
+
+
+    <div><P><h4>{ {{topic}} }-相关文章:</h4></P>
+
+        {% for about_xinw in about_xinws_list %}
+            <a href="{% url 'company:datil' about_xinw.id %} " >{{ about_xinw.caption}}</a>
+            {% endfor %}
+    </div> 
+</div> 
+
+
+{% endblock content %}

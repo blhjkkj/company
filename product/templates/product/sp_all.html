@@ -1,0 +1,29 @@
+{% extends "company/base.html" %}
+{% load static %}
+{% block content %}
+
+{%for brand in brands %}
+<div class="container-fluid shadow p-3 mb-5  rounded  alert alert-info text-center h3">
+{{brand.brand}}</div>
+
+<div class="row">
+    
+        {% for sp in brand.get_shangpings %}
+
+    <div class="col-sm-3 shadow p-3 mb-5  rounded img-fluid" >
+        <div class="card" style="width: auto; background-color: #F0FFFF;">
+            <a href="{% url 'product:产品详情' sp.id %}" class=" card-link">
+            <img class="card-img-top" src="/media/{{sp.pic1}}" alt="商品主图">
+            <div class="card-body">
+            <h2 class="card-title text-center text-dark">{{sp.name}}</h2>
+            <p class="card-text text-dark">净含量：{{sp.net_veight}}</p>
+            <p class="card-text text-dark"><h5 style="color:Red;">零售价：{{sp.price1}}元，</h5> <h4 style="color:Red;">优惠价：¥{{sp.price2}}元</h4></p>
+            <button class="button btn btn-primary">产品详情</button></a>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+</div> 
+{% endfor %}
+{% endblock content %}

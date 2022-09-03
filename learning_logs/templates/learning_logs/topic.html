@@ -1,0 +1,27 @@
+{% extends "company/base.html" %}
+
+{% block content %}
+<div class="container-fluid p-1 mb-1 alert alert-info ">
+    <p class="h4">{{ topic }} </p>
+</div>
+<div class="container shadow p-1 mb-1" style="background-color: #FFFFFF;">
+    <p>精彩内容 :</p>
+    <p>
+        <a href ="{% url 'learning_logs:new_sharer' topic.id %}"> 添加新分享 </a>
+    </p> 
+
+    <ul>
+        {% for sharer in sharers %}
+         
+            <li>
+                <p class="h3">{{ sharer.capt }}</p>
+                <p>发布时间：{{ sharer.date_added|date:'Y-m-d, H:i' }}</p>
+                <p>{{ sharer.content|safe|truncatewords:20|linebreaks }}</p>
+                <a href="{% url 'learning_logs:阅读全文' sharer.id %}"   class="readmore">...阅读全文&gt;&gt;</a>
+            </li>
+        {% empty %}
+            <li>目前还没内容，期待您的精彩分享! </li>
+        {% endfor %}
+    </ul>
+  </div> 
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends "company/base.html" %}
+<!--truncatechars:100,truncatewords:20 加入之生成莫名链接但在ckeditor加|safe后无效。 -->
+{% block content %}
+<div class='container shadow p-3 mb-5  rounded' style="background-color: #FFFFFF;">
+{% for topic in topics %}
+
+ <div class=" container shadow p-3 mb-5  rounded  alert alert-info text-dark" >
+        <p><h4><a class="text-dark" href="{% url 'company:topic' topic.id %}" role="alert">【点击进入：{{ topic.caption}}】</a></h4></p></div>
+   
+         {% for xinw in topic.get_xinws %}
+     <ul>     
+         <h4><p class="text-center font-weight-bold">{{ xinw.caption}}</p></h4>
+        <p >{{ xinw.content|safe|truncatewords:20 }}</p>
+     </ul>
+     <div class="text-right">
+       <a href="{% url 'company:datil' xinw.id %}"   type='button' class="readmore btn btn-primary">...阅读全文&gt;&gt;</a>
+   </div>
+     {% endfor %}
+ 
+  
+     {% endfor %}
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,216 @@
+
+{% extends "company/base.html" %}
+
+
+{% block content %}
+
+<div class="p-1 mb-1 alert alert-info ">
+     <p><h4><a class="text-dark" href="{% url 'learning_logs:topics' %}" role="alert">【返回：分类资讯】</a></h4></p>
+</div>
+    <div class='container shadow p-3 mb-1  rounded' >
+        <div class="col  text-center h3" style="background-color: #CCE5FF;" >{{ sharer.capt }}
+        </div>
+        <div class="col text-center">作者：{{ sharer.author }}--发布时间：{{ sharer.date_added|date:'Y-m-d,H:i' }},阅读量：{{sharer.click_num}}
+            {% if user == sharer.author %}   
+       
+            <a href="#"  onclick="confirm_safe_delete()" type="button" class="btn btn-primary right">删除文章</a>
+        
+                <hr>
+                <form
+                    style="display:none;"
+                    id="safe_delete"
+                    action="{% url 'learning_logs:sharer_safe_delete' sharer.id %}"
+                    method="POST"
+                    >
+                {% csrf_token %}
+                <button type="submit">发送</button>
+                </form>
+
+                {% endif %}
+
+        </div>
+            
+        <div class='col'style="background-color: #FFFFFF;">{{sharer.content|safe}}
+        </div>
+                <hr>
+                        {% if user == sharer.author %}
+        <div class='text-right'>
+                    <a href="{% url 'learning_logs:edit_sharer' sharer.id %}" type="button" class="btn btn-primary " >编辑文章&gt;&gt;</a>
+        </div>
+                                {% endif %}
+        <div class='col'>
+                                {% if user.is_authenticated %}
+                
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"> 我也要发言：
+                </button>
+                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#comment" aria-expanded="false" aria-controls="comment">共有{{ comments.count }}条评论
+                </button>
+                
+        </div>
+               
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form
+                    action="{% url 'comment:commit_commit' sharer.id %}" 
+                    method="POST"
+                    >       
+                     
+                                        {% csrf_token %}
+                                    {{ comment_form.as_p }} 
+                
+                                        <!-- 提交按钮 -->
+                    <button type="submit" class="btn btn-primary ">发送</button>                    
+                </form>
+            </div>
+        </div>
+                                <br>
+                                    {% else %}
+                    <br>
+                    <h5 class="row justify-content-center">
+                    请<a href="{% url 'account_login' %}?next={% firstof request.path '/' %}">登录</a>后回复
+                    </h5>
+                    <br>
+                    {% endif %}  
+                     
+           {% load mptt_tags %} 
+              
+        <div class="collapse" id="comment">
+            <div class="card card-body">  
+            {% recursetree comments %}
+                <div class="{% if node.reply_to %}
+                        offset-1 col-11
+                        {% else %}
+                        col-12
+                        {% endif %}">
+                <hr>
+          
+                    <p>                   
+                        <strong style="color: red">
+                            {{ node.user }}
+                        </strong> 
+
+                                            
+            
+                            {% if node.reply_to %}
+                        <i class="far fa-arrow-alt-circle-right" 
+                            style="color: cornflowerblue;"
+                        ></i>
+                            <strong style="color: pink">
+                            对{{ node.reply_to }}说：
+                            </strong> 
+                        
+                            {% endif %}
+                            {% if user == node.user %}
+                        <a href="#"  onclick="confirm_comment_delete()" type="button" class="btn btn-outline-danger">删除评论</a>
+                        {% endif %}
+                    </P>
+                        <div>{{ node.content|safe }}
+                        </div>
+                        <span style='color: gray;'>{{ node.created_date|date:"Y-m-d H:i" }}
+                        </span>
+
+
+                        <a  type="button" class="btn btn-primary"  aria-hidden="true" data-toggle="modal" data-target="#_{{node.pk}}"  >
+           
+                         回复&gt;&gt;
+                        </a>
+                        
+ 
+                       <form method="post" action="{% url 'comment:commit_commit' sharer.id %}" style="position:absolute">
+                                        {% csrf_token %}
+                         <div class="modal fade " id="_{{node.pk}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                   <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">回复 {{node.user}}
+                                    </h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;
+                                    </span>
+                                    </button>
+                                    </div>
+         
+                                    <div class="modal-body">
+                                    <input  type="hidden" name="parent" value="{{ node.pk }}">
+                                    <input type="hidden" name="comment" value="{{ node.id }}">
+                                    <textarea type="text" class="form-control mt-2" placeholder="请输入..." name="content"></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                        <button type="submit" class="btn btn-primary">新建</button>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>   
+                    </form>
+                        
+                            <form
+                            style="display:none;"
+                            id="comment_delete"
+                            action="{% url 'learning_logs:comment_safe_delete' sharer.id %}"
+                            method="POST"
+                               >
+                                {% csrf_token %}
+                            <button type="submit">发送</button>
+                                </form>
+               
+                    
+                        {% if not node.is_leaf_node %}
+                        <div class="children" style="color:#A0A0A0;">
+                        {{ children }}
+                        </div>
+                            {% endif %}
+                    </div>          
+                         
+{% endrecursetree %}
+            </div>                    
+        </div>
+
+{% block script %}
+
+<script>
+    // 删除文章的函数
+    function confirm_safe_delete() {
+        // 调用layer弹窗组件
+        offset: 't'
+       layer.open({
+            //设置弹窗位置
+            offset: 'rt',
+            // 弹窗标题
+            title: "确认删除",
+           // 正文
+            content: "确认删除这篇文章吗？",
+            // 点击确定按钮后调用的回调函数
+            yes: function(index, layero) {
+                // 指定应当前往的 url
+                
+                $('form#safe_delete button').click();
+                layer.close(index);
+            },
+        })
+    }
+</script>
+<script>
+    // 删除文章的函数
+    function confirm_comment_delete() {
+        // 调用layer弹窗组件
+        offset: 't'
+       layer.open({
+            //设置弹窗位置
+            offset: 'rt',
+            // 弹窗标题
+            title: "确认删除",
+           // 正文
+            content: "确认删除这篇文章吗？",
+            // 点击确定按钮后调用的回调函数
+            yes: function(index, layero) {
+                // 指定应当前往的 url
+                
+                $('form#comment_delete button').click();
+                layer.close(index);
+            },
+        })
+    }
+</script>
+{% endblock script %}
+{% endblock content %}

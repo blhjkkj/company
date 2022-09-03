@@ -1,0 +1,29 @@
+{% extends "company/base.html" %}
+{% block page_header %}
+    <div class="p-1 mb-1 alert alert-info text-dark">
+        <p><h4 class="text-dark">【所有主题】</h4></p>
+    </div>
+{% endblock page_header %}
+{% block content %}
+<div class="container shadow p-1 mb-5 rounded" style="background-color: #FFFFFF;">
+    <ul>
+        {% for topic in topics %}
+        <p><h4><a class="btn btn-lg btn-info shadow p-1 mb-1 text-dark" href="{% url 'learning_logs:topic' topic.id %}" role="button">【点击进入：{{ topic.text}}】</a></h4></p></ul>
+        <hr>
+        {% for sharer in topic.get_sharers %}            
+         <h4><p class="font-weight-bold">{{ sharer.capt}}</p></h4>
+         
+         <p>作者：{{sharer.author}}__发布时间：{{ sharer.date_added|date:'Y-m-d,H:i' }}</p>
+        <p >{{ sharer.content|safe|truncatewords:20 }}</p><a href="{% url 'learning_logs:阅读全文' sharer.id %}"   class="readmore">...阅读全文&gt;&gt;</a>
+     <hr>
+     {% endfor %}
+
+        {% empty %}
+            <ul><h3>目前还没有人分享</ul></h3>
+       
+        {% endfor %}
+    
+    <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:new_topic' %}"  role="button">发布新主题 &raquo;</a></ul>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "company/base.html" %}
+
+{% block title %}公司简介{% endblock %}
+
+{% block content %}
+<div class="p-1 mb-1 alert alert-info text-dark">
+        <p><h4><a class="text-dark" href="{% url 'company:首页' %}" role="alert">【返回首页】</a></h4></p>
+    </div>
+<br>
+{% for about in abouts %}
+<div class="container shadow p-1 mb-1" style="background-color: #FFFFFF;">
+
+<p>{{ about.text|safe }}</p>
+<h3><p class="text-center">
+联系人：{{ about.linkman }}</p></h3>
+<h3><p class="text-center">联系电话：{{ about.phone }}</p></h3>
+<h3><p class="text-center">{{ about.MP }}</p></h3>
+
+</div>
+{% endfor %}
+{% endblock content %}

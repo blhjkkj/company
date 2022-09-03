@@ -1,0 +1,28 @@
+{% extends "company/base.html" %}
+{% load i18n %}
+{% load bootstrap4 %}
+{% block title %}注册{% endblock %}
+{% block content %}
+
+<div class="container shadow p-3 mb-1  rounded">
+    <div class="row">
+        <div class="col-12"><
+        <p>已有帐号，或有微信、微博等第三方帐户 请点击按钮 <a href="{{ login_url }}" role="button" class="btn btn-primary">登录</a></p>
+        <p>没有帐号，请填写以下信息，注册新帐户</p>
+        <hr>
+            <div class="col-6">
+            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          <hr>
+            <button type="submit" class="btn btn-primary">{% trans "Sign Up" %} &raquo;</button>
+            </form>
+            </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

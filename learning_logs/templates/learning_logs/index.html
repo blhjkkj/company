@@ -1,0 +1,26 @@
+{% extends "company/base.html" %}
+{% block page_header %}
+    <div class="jumbotron bg-info">
+        <p class="display-3 text-center  font-weight-bold"  >记录您的健康故事。</p>
+        <p class="lead text-center">>
+            <span><h3>敬畏生命，开始行动！</h3></span>
+            <span><h2>无论是</h2><h3 style="color:Crimson ;">肥胖、三高、还是很多难缠的慢性病，</h3><h2>无不与日常习惯相关，而习惯是如此之轻，以至于难以察觉，习惯又是如此之重，以至于难以改变！</h2></span>
+        <span><h1>在这里:</h1></span>
+        <h3>您可以通过记录生活中点滴改变，去发现自己的不良习惯，并慢慢改变，也可以与专业人员沟通，获取正确的日常习惯要求，通过记录，发现问题养成正确的生活方式！</p>
+            
+             {% if user.is_authenticated %} 
+
+              <button type='button' class=" btn btn-lg btn-primary" >欢迎：{{ user.username }}</button>
+              <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:topics' %}" role="button">进入健康笔记 &raquo;</a>
+                               
+              {% else %} 
+              
+            <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}" role="button">注册 &raquo;</a>
+            <a class="btn btn-lg btn-primary" href="{% url 'users:login' %}" role="button">登录 &raquo;</a>
+              {% endif %} 
+          </div>
+      </div>
+         
+        
+    </div>
+{% endblock page_header %}

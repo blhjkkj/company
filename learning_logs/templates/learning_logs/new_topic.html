@@ -1,0 +1,15 @@
+{% extends "company/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+     <div class="p-1 mb-1 alert alert-info text-dark">
+        <p><h4><a class="text-dark" href="#" role="alert">【添加新主题】</a></h4></p>
+    </div>
+    <div class="container">
+    <form action= "{% url 'learning_logs:new_topic' %}" method='post' class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %} 
+        <button name="submit">发布</button>
+    </form>
+</div>
+
+{% endblock content %}

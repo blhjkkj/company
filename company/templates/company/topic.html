@@ -1,0 +1,19 @@
+{% extends "company/base.html" %}
+{% block content %}
+    <div class="container shadow p-1 mb-3 alert alert-info">
+        <p><h4><a class="text-dark" href="{% url 'company:分类资讯' %}" role="alert">【返回：分类资讯】</a></h4></p>
+    </div>
+         
+        <div class="container shadow p-1 mb-3" style="background-color: #FFFFFF;"> 
+        {% for xinw in xinws %}
+        
+            <h4><p> {{xinw.caption}} </p></h4>
+                <p>作者：{{xinw.author}}--发布时间：{{xinw.date_added|date:'Y-m-d,H:i'}}</p>
+                <p>来源：{{xinw.origin}}</p>
+        
+                <p class="text-center">{{ xinw.content|safe|truncatewords:20 }}</p><a href="{% url 'company:datil' xinw.id %}"   class="readmore">...阅读全文&gt;&gt;</a>
+      
+                   
+        {% endfor %}
+  </div>
+{% endblock content %}

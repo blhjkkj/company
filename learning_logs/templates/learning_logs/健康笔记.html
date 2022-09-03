@@ -1,0 +1,34 @@
+{% extends "company/base.html" %}
+{% load static %}
+{% block page_header %}
+<div class="container-fluid jumbotron bg-info shadow p-3 mb-5rounded">
+    <p class="display-3 text-center  font-weight-bold"  >记录您的健康故事。</p>
+    <div class='row'>
+        <div class="col-md-4 offset-md-4">
+            <img src="{% static 'img/电量变化.gif' %}" class="img-fluid"></img>
+            <h2><p class="text-hide">我们总觉得生命很长，可以任意挥霍，其实生命的电量剩余并不多，有时我们会想，如果马航安全返航，如果汶川没有发生地震，那些离去的人，如果此时还活着，他们是否还会为了事业不顺而而"烦恼“？会为了感情纠结而"苦恼"?,会否继续为了房子、车子、票子不顾身体去拼搏?,可惜生活没有如果，我们感到不幸福的今天，却正是他们不可再得的明天！也许明天就是我们…………，不要等到失去时，才感知健康的重要，从现在开始，我们就应该好好的爱自己，让我们剩余的生命的电量充实地用、美丽地用、快乐地用、健康地用！</p></h2>
+        </div>
+    </div>
+        <p class="lead text-center">
+            <span><h3>敬畏生命，开始行动！</h3></span>
+            <span><h2>无论是</h2><h3 style="color:Crimson ;">肥胖、三高、还是很多难缠的慢性病，</h3><h2>无不与日常习惯相关，而习惯是如此之轻，以至于难以察觉，习惯又是如此之重，以至于难以改变！</h2></span>
+        <span><h1>在这里:</h1></span>
+        <h3>通过记录生活中日常习惯的点滴改变，分享您的健康体验，也可以与专业人员沟通，学习、掌握正确的日常习惯，以帮助自己养成正确的生活习惯，重获健康的身体！</P>
+            
+             {% if user.is_authenticated %} 
+
+              <button type='button' class=" btn btn-lg btn-primary" >欢迎：{{ user.username }}</button>
+              <a class="btn btn-lg btn-primary" href="{% url 'learning_logs:topics' %}" role="button">进入健康笔记 &raquo;</a>
+                               
+              {% else %} 
+              
+            <a class="btn btn-lg btn-primary" href="{% url 'account_signup' %}?next=
+{% firstof request.path '/' %}" role="button">注册 &raquo;</a>
+            <a class="btn btn-lg btn-primary" href="{% url 'account_login' %}?next=
+{% firstof request.path '/' %}" role="button">登录 &raquo;</a>
+              {% endif %} 
+        
+         
+        
+    </div>
+{% endblock page_header %}

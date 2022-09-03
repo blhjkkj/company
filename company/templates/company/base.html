@@ -1,0 +1,122 @@
+{% load bootstrap4 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+<!doctype html>
+<html lang ="zh-cn">
+    <head>
+                          <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=0">
+        <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+        <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+        <!--引入ckeditor css文件 -->
+        <link rel="stylesheet" type="text/css" src="{% static 'ckeditor/ckeditor/contents.css' %}">
+                <!-- Bootstrap CSS -->
+                  <!--ckeditor-->
+       <script type=" src="\\cdn.ckeditor.com/4.4.6/standard/ckeditor.js></script>
+
+    <style>
+      body{
+        background-color:#E0E0E0 ;
+      }
+      video{
+        max-width:100%;
+        height:auto;
+        }
+      
+        }
+       h1{
+        font-family: STLiti,LiSu,cursive;
+        }
+        h2{font-family: STLiti,LiSu,cursive；
+          }
+        h3{font-family: SimHei,STLiti,LiSu,cursive；
+          }
+        h4{font-family: KaiTi,STLiti,LiSu,cursive；
+          }
+        h5{font-family: STLiti,LiSu,cursive；
+          }
+        .container-fluid{
+          padding-right:0;
+          padding-left:0;
+          margin-right:auto;
+          margin-left:auto；
+          }
+      </style>
+         <title >百龄花健康- {% block title %}{% endblock %}</title>
+      {% block head %}{% endblock head %}
+      
+    </head> 
+    <body> 
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #e3f2fd;" >
+          <a class="navbar-brand" href="{% url 'company:首页' %}"><img src="{% static 'image/公司图形logo.png' %}" width="40" height="40" class="d-inline-block align-top" alt="公司logo"><class="font-weight-bold">以康为贵</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">        
+          <ul class="nav justify-content-center">
+            <li class="nav-item active">
+              <a class="nav-link text-dark" href="{% url 'company:公司简介' %}" ><h4 class="font-weight-bold">公司简介</h4> <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'company:分类资讯' %}"><h4 class="font-weight-bold">分类资讯</h4></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'learning_logs:健康笔记' %}"><h4 class="font-weight-bold">健康笔记</h4></a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'company:体质评测' %}"><h4 class="font-weight-bold">体质评测</h4></a>
+            </li>
+            
+
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'product:sp_all' %}"><h4 class="font-weight-bold">小康商城</h4></a>
+            </li>            
+                       
+          </ul>
+
+            <div class="navbar-nav ml-auto">
+              {% if user.is_authenticated %} 
+                <li class="nav-item"> 
+                  <span class="navbar-text text-dark"><欢迎：{{ user.username }}>
+                  </span> 
+                </li> 
+                <li class="nav-item"> 
+                  <a class="nav-link text-dark" href="{% url 'account_logout' %}?next=
+{% firstof request.path '/' %}"><h4 class="font-weight-bold">注销</h4> 
+                  </a>
+                </li>    
+              {% else %} 
+                <li class="nav-item"> 
+                  <a class="nav-link text-dark" href="{% url 'account_signup' %}?next=
+{% firstof request.path '/' %}"><h4>注册</h4>
+                  </a> 
+                  </li> 
+                  <li class="nav-item"> 
+                    <a class="nav-link text-dark" href="{% url 'account_login' %}?next=
+{% firstof request.path '/' %}"><h4>登录</h4>
+                    </a>
+                  </li>
+              {% endif %} 
+            </div> 
+        </div>
+    </nav>
+     
+            
+       {% block page_header %}{%　endblock page_header %}
+          
+        {% block content %}{% endblock content %}
+    
+  
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="{% static 'layer/layer.js' %}"></script>      
+        {% block script %}{% endblock script %}
+    </body>
+    <footer>
+    </footer>
+</html>    
+
+
